@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">StreetPaper</string>
-    <string name="source_description">Using your location, StreetPaper app sets your wallpaper to be a map of where you are.</string>
+    <string name="source_description">Use your location as your wallpaper</string>
+    <string name="settings_title">StreetPaper</string>
+    <string name="settings_title_bottom">for Muzei</string>
+    <string name="only_wifi">Only over WIFI</string>
+    <string name="refresh_rate">Refresh rate</string>
 </resources>

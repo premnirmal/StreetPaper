@@ -8,7 +8,15 @@
     <application android:allowBackup="true"
         android:label="@string/app_name"
         android:icon="@drawable/ic_launcher"
+        android:description="@string/source_description"
         android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"
+            android:exported="true" />
+
         <service android:name=".services.StreetPaperService"
                  android:label="@string/app_name"
                  android:description="@string/source_description"
@@ -17,6 +25,9 @@
                 <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource" />
             </intent-filter>
             <meta-data android:name="color" android:value="#fa0" />
+            <meta-data
+                android:name="settingsActivity"
+                android:value="com.test.tube.baby.streetpaper.app.activities.SettingsActivity" />
         </service>
         <meta-data
             android:name="com.google.android.gms.version"

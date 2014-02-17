@@ -1,17 +1,24 @@
 package com.test.tube.baby.streetpaper.app.services;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Binder;
 import android.os.Bundle;
+import android.os.IBinder;
 
 import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
+import com.test.tube.baby.streetpaper.app.activities.SettingsActivity;
 import com.test.tube.baby.streetpaper.app.request.UrlBuilder;
+import com.test.tube.baby.streetpaper.app.utils.Config;
+import com.test.tube.baby.streetpaper.app.utils.PreferenceKeys;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,9 +33,8 @@ public class StreetPaperService extends RemoteMuzeiArtSource implements
         GooglePlayServicesClient.OnConnectionFailedListener {
 
     public static final String APP_NAME = "StreetPaper";
-    private static final int ROTATE_TIME_MILLIS = 3 * 60 * 60 * 1000; // rotate every 3 hours
     private static final int FAILED_TIME = 1000; // every second
-
+    private final IBinder mBinder = new LocalBinder();
     private LocationClient mLocationClient;
     private Location mCurrentLocation;
 
@@ -47,6 +53,17 @@ public class StreetPaperService extends RemoteMuzeiArtSource implements
         setUserCommands(BUILTIN_COMMAND_ID_NEXT_ARTWORK);
     }
 
+    public class LocalBinder extends Binder {
+        public StreetPaperService getService() {
+            return StreetPaperService.this;
+        }
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mBinder;
+    }
+
     private LocationClient setupLocationClient() {
         LocationClient locationClient = new LocationClient(getApplicationContext(), this, this);
         locationClient.connect();
@@ -59,12 +76,11 @@ public class StreetPaperService extends RemoteMuzeiArtSource implements
         super.onDestroy();
     }
 
-    @Override
-    protected void onTryUpdate(int i) throws RetryException {
+    public void buildImage(int mode) {
         if (mCurrentLocation != null) {
             Location currentLocation = mCurrentLocation;
-            String url = UrlBuilder.buildUrl(currentLocation, getResources());
-            Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.US);
+            String url = UrlBuilder.buildUrl(currentLocation, getResources(), mode);
+            Geocoder geocoder = new Geocoder(this, Locale.US);
             List<Address> addresses = new ArrayList<Address>();
             try {
                 addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
@@ -75,7 +91,7 @@ public class StreetPaperService extends RemoteMuzeiArtSource implements
             if (!addresses.isEmpty()) {
                 Address address = addresses.get(0);
                 name = address.getAdminArea();
-                desc = address.getThoroughfare() + "," + address.getSubLocality() + ", " + address.getAdminArea()
+                desc = address.getSubLocality() + ", " + address.getAdminArea()
                         + ", " + address.getCountryName();
             }
             publishArtwork(new Artwork.Builder()
@@ -83,7 +99,21 @@ public class StreetPaperService extends RemoteMuzeiArtSource implements
                     .byline(desc)
                     .imageUri(Uri.parse(url))
                     .build());
-            scheduleUpdate(System.currentTimeMillis() + ROTATE_TIME_MILLIS);
+        }
+    }
+
+    @Override
+    protected void onTryUpdate(int i) throws RetryException {
+        final SharedPreferences settings = getSharedPreferences(SettingsActivity.PREFS_NAME, 0);
+        // Check if we cancel the update due to WIFI connection
+        if (settings.getBoolean(PreferenceKeys.WIFI_ONLY, false) && !Config.isWifiConnected(this)) {
+            scheduleUpdate(System.currentTimeMillis() + settings.getInt(PreferenceKeys.REFRESH_TIME, 7200000));
+            return;
+        }
+
+        if (mCurrentLocation != null) {
+            buildImage(settings.getInt(PreferenceKeys.MODE, 0));
+            scheduleUpdate(System.currentTimeMillis() + settings.getInt(PreferenceKeys.REFRESH_TIME, 7200000));
         } else {
             scheduleUpdate(System.currentTimeMillis() + FAILED_TIME);
         }

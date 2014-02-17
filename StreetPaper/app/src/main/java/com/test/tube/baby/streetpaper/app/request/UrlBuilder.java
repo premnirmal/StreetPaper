@@ -10,9 +10,7 @@ import com.test.tube.baby.streetpaper.app.utils.Config;
  */
 public class UrlBuilder {
 
-    public static final String SATELLITE = "satellite";
-    public static final String HYBRID = "HYBRID";
-
+    public static final String[] modes = {"", "&maptype=satellite", "&maptype=hybrid"};
     private static final String ZOOM = "12";
 
     private UrlBuilder() {
@@ -20,14 +18,10 @@ public class UrlBuilder {
 
     private static final String BASE_URL = "https://maps.googleapis.com/maps/api/staticmap?center=";
 
-    public static String buildUrl(Location location, Resources res) {
-        return BASE_URL + location.getLatitude() + "," + location.getLongitude() +
-                "&zoom=" + ZOOM + "&size=" + getDimensions(res) +// "&maptype=" + SATELLITE+
-                "&sensor=false&key=" + Config.API_KEY;
-    }
-
-    private String getMapType() {
-        return "";
+    public static String buildUrl(Location location, Resources res, int mode) {
+        return BASE_URL + location.getLatitude() + "," + location.getLongitude()
+                + "&zoom=" + ZOOM + "&size=" + getDimensions(res) + modes[mode]
+                + "&sensor=false&key=" + Config.API_KEY;
     }
 
     private static String getDimensions(Resources res) {

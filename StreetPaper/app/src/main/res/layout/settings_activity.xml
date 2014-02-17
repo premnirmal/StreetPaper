@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#22000000">
+
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            style="@style/Settings.Shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_title"
+            android:textSize="32sp"
+            android:textColor="@android:color/white"
+            android:fontFamily="fonts/alegreya-black-italic.ttf"/>
+
+        <TextView
+            style="@style/Settings.Shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_title_bottom"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/white"
+            android:fontFamily="fonts/alegreya-black-italic.ttf"/>
+
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/mode_chooser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/wifi"
+        android:layout_below="@id/mode_chooser">
+
+        <TextView
+
+            style="@style/Settings.Shadow"
+            android:layout_width="match_parent"
+            android:layout_toLeftOf="@+id/wifi_only"
+            android:layout_alignParentLeft="true"
+            android:layout_height="wrap_content"
+            android:text="@string/only_wifi"
+            android:textSize="14sp"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/white"
+            android:fontFamily="fonts/Avenir-Bold.otf"
+            android:textAllCaps="true" />
+
+        <Switch
+            android:layout_alignParentRight="true"
+            android:id="@+id/wifi_only"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+
+            android:textOn="ON"
+            android:textOff="OFF"
+            android:layout_gravity="right" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wifi"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+
+            style="@style/Settings.Shadow"
+            android:layout_width="match_parent"
+            android:layout_toLeftOf="@+id/refresh_rate"
+            android:layout_alignParentLeft="true"
+            android:layout_height="wrap_content"
+            android:text="@string/refresh_rate"
+            android:textSize="14sp"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/white"
+            android:fontFamily="fonts/Avenir-Bold.otf"
+            android:textAllCaps="true" />
+
+        <TextView
+
+            android:layout_alignParentRight="true"
+            android:id="@+id/refresh_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:drawableLeft="@drawable/ic_audio_alarm"
+            android:drawablePadding="5dp"
+            android:textColor="@android:color/white"
+            android:gravity="center_vertical"
+            android:layout_gravity="right"
+            style="@style/Settings.Shadow"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/buttons_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            style="@style/Settings.Shadow"
+            android:id="@+id/ok_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/translucent"
+            android:text="@android:string/ok"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:fontFamily="fonts/Avenir-Bold.otf"
+            android:textAllCaps="true" />
+
+    </LinearLayout>
+
+</RelativeLayout>

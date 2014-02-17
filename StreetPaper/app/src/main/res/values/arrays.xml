@@ -1,0 +1,7 @@
+<resources>
+    <string-array name="modes">
+        <item>Map</item>
+        <item>Satellite</item>
+        <item>Hybrid</item>
+    </string-array>
+</resources>
