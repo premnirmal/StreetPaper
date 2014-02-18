@@ -38,5 +38,4 @@ dependencies {
     compile 'com.google.android.gms:play-services:4.0.30'
     compile 'com.google.android.apps.muzei:muzei-api:+'
     compile 'uk.co.chrisjenx.calligraphy:calligraphy:0.6.+'
-    compile 'com.doomonafireball.betterpickers:library:1.5.2'
 }

@@ -11,16 +11,15 @@ import com.test.tube.baby.streetpaper.app.utils.Config;
 public class UrlBuilder {
 
     public static final String[] modes = {"", "&maptype=satellite", "&maptype=hybrid"};
-    private static final String ZOOM = "12";
 
     private UrlBuilder() {
     }
 
     private static final String BASE_URL = "https://maps.googleapis.com/maps/api/staticmap?center=";
 
-    public static String buildUrl(Location location, Resources res, int mode) {
+    public static String buildUrl(Location location, Resources res, int mode, int zoom) {
         return BASE_URL + location.getLatitude() + "," + location.getLongitude()
-                + "&zoom=" + ZOOM + "&size=" + getDimensions(res) + modes[mode]
+                + "&zoom=" + zoom + "&size=" + getDimensions(res) + modes[mode]
                 + "&sensor=false&key=" + Config.API_KEY;
     }
 

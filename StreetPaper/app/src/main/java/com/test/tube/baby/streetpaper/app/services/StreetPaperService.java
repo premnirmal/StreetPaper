@@ -76,10 +76,10 @@ public class StreetPaperService extends RemoteMuzeiArtSource implements
         super.onDestroy();
     }
 
-    public void buildImage(int mode) {
+    public void buildImage(int mode, int zoom) {
         if (mCurrentLocation != null) {
             Location currentLocation = mCurrentLocation;
-            String url = UrlBuilder.buildUrl(currentLocation, getResources(), mode);
+            String url = UrlBuilder.buildUrl(currentLocation, getResources(), mode, zoom);
             Geocoder geocoder = new Geocoder(this, Locale.US);
             List<Address> addresses = new ArrayList<Address>();
             try {
@@ -90,9 +90,8 @@ public class StreetPaperService extends RemoteMuzeiArtSource implements
             String desc = "";
             if (!addresses.isEmpty()) {
                 Address address = addresses.get(0);
-                name = address.getAdminArea();
-                desc = address.getSubLocality() + ", " + address.getAdminArea()
-                        + ", " + address.getCountryName();
+                name = address.getSubLocality();
+                desc = address.getAdminArea() + " " + address.getCountryName();
             }
             publishArtwork(new Artwork.Builder()
                     .title(name)
@@ -107,13 +106,13 @@ public class StreetPaperService extends RemoteMuzeiArtSource implements
         final SharedPreferences settings = getSharedPreferences(SettingsActivity.PREFS_NAME, 0);
         // Check if we cancel the update due to WIFI connection
         if (settings.getBoolean(PreferenceKeys.WIFI_ONLY, false) && !Config.isWifiConnected(this)) {
-            scheduleUpdate(System.currentTimeMillis() + settings.getInt(PreferenceKeys.REFRESH_TIME, 7200000));
+            scheduleUpdate(System.currentTimeMillis() + SettingsActivity.BASE_REFRESH_RATE * (1 + settings.getInt(PreferenceKeys.REFRESH_TIME, 0)));
             return;
         }
 
         if (mCurrentLocation != null) {
-            buildImage(settings.getInt(PreferenceKeys.MODE, 0));
-            scheduleUpdate(System.currentTimeMillis() + settings.getInt(PreferenceKeys.REFRESH_TIME, 7200000));
+            buildImage(settings.getInt(PreferenceKeys.MODE, 0), settings.getInt(PreferenceKeys.ZOOM, 12));
+            scheduleUpdate(System.currentTimeMillis() + SettingsActivity.BASE_REFRESH_RATE * (1 + settings.getInt(PreferenceKeys.REFRESH_TIME, 0)));
         } else {
             scheduleUpdate(System.currentTimeMillis() + FAILED_TIME);
         }

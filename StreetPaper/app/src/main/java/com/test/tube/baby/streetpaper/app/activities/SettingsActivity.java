@@ -15,13 +15,9 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
 
-import com.doomonafireball.betterpickers.hmspicker.HmsPickerBuilder;
-import com.doomonafireball.betterpickers.hmspicker.HmsPickerDialogFragment;
 import com.test.tube.baby.streetpaper.app.R;
 import com.test.tube.baby.streetpaper.app.services.StreetPaperService;
-import com.test.tube.baby.streetpaper.app.utils.Config;
 import com.test.tube.baby.streetpaper.app.utils.PreferenceKeys;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -30,13 +26,15 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 /**
  * Created by prem on 2/17/14.
  */
-public class SettingsActivity extends FragmentActivity implements HmsPickerDialogFragment.HmsPickerDialogHandler {
+public class SettingsActivity extends FragmentActivity {
 
     public static final String PREFS_NAME = "streetpaper_prefs";
-    private static final String TAG = SettingsActivity.class.getSimpleName();
-    private TextView mRefreshRate;
     protected StreetPaperService mService;
     protected boolean mBound;
+
+    public static final String[] zooms = {" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 ", " 11 "};
+
+    public static final int BASE_REFRESH_RATE = 3 * 60 * 60 * 1000; // 3 hours
 
     @Override
     protected void onStart() {
@@ -69,9 +67,9 @@ public class SettingsActivity extends FragmentActivity implements HmsPickerDialo
         //Find views
         Button okButton = (Button) findViewById(R.id.ok_button);
         final Spinner modeChooser = (Spinner) findViewById(R.id.mode_chooser);
+        final Spinner zoomChooser = (Spinner) findViewById(R.id.zoom_chooser);
 
         Switch wifiOnly = (Switch) findViewById(R.id.wifi_only);
-        mRefreshRate = (TextView) findViewById(R.id.refresh_rate);
 
         //Wifi status and setting
         wifiOnly.setChecked(settings.getBoolean(PreferenceKeys.WIFI_ONLY, false));
@@ -84,15 +82,17 @@ public class SettingsActivity extends FragmentActivity implements HmsPickerDialo
             }
         });
 
+        // mode
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.modes, R.layout.spinner_layout);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         modeChooser.setAdapter(adapter);
-
         modeChooser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (mService != null)
-                    mService.buildImage(position);
+                    mService.buildImage(position, settings.getInt(PreferenceKeys.ZOOM, 12));
+                editor.putInt(PreferenceKeys.MODE, position);
+                editor.commit();
             }
 
             @Override
@@ -100,48 +100,59 @@ public class SettingsActivity extends FragmentActivity implements HmsPickerDialo
             }
         });
 
-        int refreshRate = settings.getInt(PreferenceKeys.REFRESH_TIME, 7200000);
-        int mode = settings.getInt(PreferenceKeys.MODE, 0);
-
-        mRefreshRate.setText(Config.convertDurationtoString(refreshRate));
-        modeChooser.setSelection(mode);
-
-        mRefreshRate.setOnClickListener(new View.OnClickListener() {
+        // zoom
+        ArrayAdapter<CharSequence> zoomAdapter = new ArrayAdapter<CharSequence>(this, R.layout.spinner_layout, zooms);
+        zoomAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        zoomChooser.setAdapter(zoomAdapter);
+        zoomChooser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                HmsPickerBuilder hpb = new HmsPickerBuilder()
-                        .setFragmentManager(getSupportFragmentManager())
-                        .setStyleResId(R.style.BetterPickersDialogFragment);
-                hpb.show();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (mService != null)
+                    mService.buildImage(settings.getInt(PreferenceKeys.MODE, 0), position + 8);
+                editor.putInt(PreferenceKeys.ZOOM, position + 8);
+                editor.commit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        // refresh
+        final Spinner refresh_spinner = (Spinner) findViewById(R.id.refresh_rate);
+        ArrayAdapter<CharSequence> refreshRateAdapter = ArrayAdapter.createFromResource(this, R.array.refreshrates, R.layout.spinner_layout);
+        refreshRateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        refresh_spinner.setAdapter(refreshRateAdapter);
+        refresh_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                editor.putInt(PreferenceKeys.REFRESH_TIME, position);
+                editor.commit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        int refreshRate = settings.getInt(PreferenceKeys.REFRESH_TIME, 0);
+        int mode = settings.getInt(PreferenceKeys.MODE, 0);
+        int zoom = settings.getInt(PreferenceKeys.ZOOM, 12);
+
+        modeChooser.setSelection(mode);
+        zoomChooser.setSelection(zoom - 8);
+        refresh_spinner.setSelection(refreshRate);
 
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editor.putInt(PreferenceKeys.MODE, modeChooser.getSelectedItemPosition());
+                editor.putInt(PreferenceKeys.ZOOM, zoomChooser.getSelectedItemPosition() + 8);
+                editor.putInt(PreferenceKeys.REFRESH_TIME, refresh_spinner.getSelectedItemPosition());
                 editor.commit();
                 finish();
             }
         });
-    }
-
-    /**
-     * The duration picker has been closed
-     *
-     * @param reference
-     * @param hours
-     * @param minutes
-     * @param seconds
-     */
-    @Override
-    public void onDialogHmsSet(int reference, int hours, int minutes, int seconds) {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        int duration = hours * 3600000 + minutes * 60000 + seconds * 1000;
-        editor.putInt(PreferenceKeys.REFRESH_TIME, duration);
-        editor.commit();
-        mRefreshRate.setText(Config.convertDurationtoString(duration));
     }
 
     @Override

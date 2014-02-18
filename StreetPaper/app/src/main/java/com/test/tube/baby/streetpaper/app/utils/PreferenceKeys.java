@@ -5,6 +5,7 @@ package com.test.tube.baby.streetpaper.app.utils;
  */
 public class PreferenceKeys {
     public static final String WIFI_ONLY = "wifi_only";
-    public static final String REFRESH_TIME = "refresh";
+    public static final String REFRESH_TIME = "refresh_time";
     public static final String MODE = "mode";
+    public static final String ZOOM = "zoom";
 }

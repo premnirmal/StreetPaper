@@ -5,4 +5,6 @@
     <string name="settings_title_bottom">for Muzei</string>
     <string name="only_wifi">Only over WIFI</string>
     <string name="refresh_rate">Refresh rate</string>
+    <string name="choose_mode">Mode</string>
+    <string name="zoom_level">Zoom level</string>
 </resources>

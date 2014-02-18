@@ -5,7 +5,7 @@
                 android:padding="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#22000000">
+                android:background="#40000000">
 
     <LinearLayout
         android:id="@+id/title"
@@ -16,7 +16,7 @@
         android:gravity="center_horizontal"
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="20dp">
 
         <TextView
             style="@style/Settings.Shadow"
@@ -39,26 +39,68 @@
 
     </LinearLayout>
 
-    <Spinner
-        android:id="@+id/mode_chooser"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_below="@id/title"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/modeHolder"
+        android:layout_below="@id/title">
+
+        <TextView
+            style="@style/Settings.Shadow"
+            android:layout_width="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_mode"
+            android:textSize="14sp"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/white"
+            android:fontFamily="fonts/Avenir-Bold.otf"
+            android:textAllCaps="true"/>
+
+        <Spinner
+            android:id="@+id/mode_chooser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/zoomHolder"
+        android:layout_below="@id/modeHolder">
+
+        <TextView
+            style="@style/Settings.Shadow"
+            android:layout_width="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_height="wrap_content"
+            android:text="@string/zoom_level"
+            android:textSize="14sp"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/white"
+            android:fontFamily="fonts/Avenir-Bold.otf"
+            android:textAllCaps="true"/>
+
+        <Spinner
+            android:id="@+id/zoom_chooser"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:id="@+id/wifi"
-        android:layout_below="@id/mode_chooser">
+        android:layout_below="@id/zoomHolder">
 
         <TextView
-
             style="@style/Settings.Shadow"
             android:layout_width="match_parent"
             android:layout_toLeftOf="@+id/wifi_only"
@@ -69,7 +111,7 @@
             android:layout_centerVertical="true"
             android:textColor="@android:color/white"
             android:fontFamily="fonts/Avenir-Bold.otf"
-            android:textAllCaps="true" />
+            android:textAllCaps="true"/>
 
         <Switch
             android:layout_alignParentRight="true"
@@ -80,7 +122,7 @@
 
             android:textOn="ON"
             android:textOff="OFF"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -93,7 +135,6 @@
 
             style="@style/Settings.Shadow"
             android:layout_width="match_parent"
-            android:layout_toLeftOf="@+id/refresh_rate"
             android:layout_alignParentLeft="true"
             android:layout_height="wrap_content"
             android:text="@string/refresh_rate"
@@ -101,22 +142,15 @@
             android:layout_centerVertical="true"
             android:textColor="@android:color/white"
             android:fontFamily="fonts/Avenir-Bold.otf"
-            android:textAllCaps="true" />
+            android:textAllCaps="true"/>
 
-        <TextView
-
-            android:layout_alignParentRight="true"
+        <Spinner
             android:id="@+id/refresh_rate"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:drawableLeft="@drawable/ic_audio_alarm"
-            android:drawablePadding="5dp"
-            android:textColor="@android:color/white"
-            android:gravity="center_vertical"
-            android:layout_gravity="right"
-            style="@style/Settings.Shadow"/>
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -135,7 +169,7 @@
             android:textSize="18sp"
             android:textColor="@android:color/white"
             android:fontFamily="fonts/Avenir-Bold.otf"
-            android:textAllCaps="true" />
+            android:textAllCaps="true"/>
 
     </LinearLayout>
 

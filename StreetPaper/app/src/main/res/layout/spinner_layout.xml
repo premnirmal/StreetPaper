@@ -3,10 +3,8 @@
           android:id="@android:id/text1"
           style="?android:attr/spinnerItemStyle"
           android:singleLine="true"
-          android:padding="10dp"
           android:textSize="18dp"
           android:fontFamily="fonts/Avenir-Bold.otf"
+          android:gravity="right"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:ellipsize="marquee"
-          android:textAlignment="inherit"/>
+          android:layout_height="wrap_content"/>
