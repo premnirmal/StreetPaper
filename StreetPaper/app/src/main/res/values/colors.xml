@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <drawable name="transparent">#00000000</drawable>
-    <drawable name="translucent">#80666666</drawable>
+    <drawable name="translucent">#60000000</drawable>
+    <drawable name="backgroundColor">#20000000</drawable>
 </resources>
