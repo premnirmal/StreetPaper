@@ -26,7 +26,7 @@ public class UrlBuilder {
     private static String getDimensions(Resources res) {
         String width = String.valueOf(res.getDisplayMetrics().widthPixels);
         String height = String.valueOf(res.getDisplayMetrics().heightPixels);
-        return width + "x" + height;
+        return "1200x1200";
     }
 }
 

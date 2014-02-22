@@ -77,27 +77,30 @@ public class StreetPaperService extends RemoteMuzeiArtSource implements
     }
 
     public void buildImage(int mode, int zoom) {
-        if (mCurrentLocation != null) {
-            Location currentLocation = mCurrentLocation;
-            String url = UrlBuilder.buildUrl(currentLocation, getResources(), mode, zoom);
-            Geocoder geocoder = new Geocoder(this, Locale.US);
-            List<Address> addresses = new ArrayList<Address>();
-            try {
-                addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
-            } catch (IOException e) {
+        try {
+            if (mCurrentLocation != null) {
+                Location currentLocation = mCurrentLocation;
+                String url = UrlBuilder.buildUrl(currentLocation, getResources(), mode, zoom);
+                Geocoder geocoder = new Geocoder(this, Locale.US);
+                List<Address> addresses = new ArrayList<Address>();
+                try {
+                    addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+                } catch (IOException e) {
+                }
+                String name = "";
+                String desc = "";
+                if (!addresses.isEmpty()) {
+                    Address address = addresses.get(0);
+                    name = address.getSubLocality();
+                    desc = address.getAdminArea() + " " + address.getCountryName();
+                }
+                publishArtwork(new Artwork.Builder()
+                        .title(name)
+                        .byline(desc)
+                        .imageUri(Uri.parse(url))
+                        .build());
             }
-            String name = "";
-            String desc = "";
-            if (!addresses.isEmpty()) {
-                Address address = addresses.get(0);
-                name = address.getSubLocality();
-                desc = address.getAdminArea() + " " + address.getCountryName();
-            }
-            publishArtwork(new Artwork.Builder()
-                    .title(name)
-                    .byline(desc)
-                    .imageUri(Uri.parse(url))
-                    .build());
+        } catch (Throwable t) {
         }
     }
 
@@ -113,8 +116,6 @@ public class StreetPaperService extends RemoteMuzeiArtSource implements
         if (mCurrentLocation != null) {
             buildImage(settings.getInt(PreferenceKeys.MODE, 0), settings.getInt(PreferenceKeys.ZOOM, 12));
             scheduleUpdate(System.currentTimeMillis() + SettingsActivity.BASE_REFRESH_RATE * (1 + settings.getInt(PreferenceKeys.REFRESH_TIME, 0)));
-        } else {
-            scheduleUpdate(System.currentTimeMillis() + FAILED_TIME);
         }
 
     }

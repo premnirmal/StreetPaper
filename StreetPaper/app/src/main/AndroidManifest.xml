@@ -1,9 +1,38 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.test.tube.baby.streetpaper.app">
+          package="com.test.tube.baby.streetpaper.app">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <compatible-screens>
+        <!-- all small size screens -->
+        <screen
+            android:screenSize="small"
+            android:screenDensity="ldpi"/>
+        <screen
+            android:screenSize="small"
+            android:screenDensity="mdpi"/>
+        <screen
+            android:screenSize="small"
+            android:screenDensity="hdpi"/>
+        <screen
+            android:screenSize="small"
+            android:screenDensity="xhdpi"/>
+        <!-- all normal size screens -->
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="ldpi"/>
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="mdpi"/>
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="hdpi"/>
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="xhdpi"/>
+    </compatible-screens>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:debuggable="false"
@@ -17,19 +46,23 @@
             android:name=".activities.SettingsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
-            android:exported="true" />
+            android:exported="true"/>
 
-        <service android:name=".services.StreetPaperService"
-                 android:label="@string/app_name"
-                 android:description="@string/source_description"
-                 android:icon="@drawable/ic_launcher">
+        <service
+            android:name=".services.StreetPaperService"
+            android:label="@string/app_name"
+            android:description="@string/source_description"
+            android:icon="@drawable/ic_launcher">
             <intent-filter>
-                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource" />
+                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource"/>
             </intent-filter>
-            <meta-data android:name="color" android:value="#fa0" />
+
+            <meta-data
+                android:name="color"
+                android:value="#fa0"/>
             <meta-data
                 android:name="settingsActivity"
-                android:value="com.test.tube.baby.streetpaper.app.activities.SettingsActivity" />
+                android:value="com.test.tube.baby.streetpaper.app.activities.SettingsActivity"/>
         </service>
         <meta-data
             android:name="com.google.android.gms.version"

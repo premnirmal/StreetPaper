@@ -9,6 +9,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -60,6 +64,11 @@ public class SettingsActivity extends FragmentActivity {
         CalligraphyConfig.initDefault("");
 
         setContentView(R.layout.settings_activity);
+
+        // simple slide in animation
+        ViewGroup layout = (ViewGroup) findViewById(R.id.layout);
+        Animation animation = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
+        layout.setLayoutAnimation(new LayoutAnimationController(animation));
 
         final SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         final SharedPreferences.Editor editor = settings.edit();
