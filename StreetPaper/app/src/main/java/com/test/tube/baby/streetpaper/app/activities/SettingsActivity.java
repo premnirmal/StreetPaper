@@ -36,7 +36,7 @@ public class SettingsActivity extends FragmentActivity {
     protected StreetPaperService mService;
     protected boolean mBound;
 
-    public static final String[] zooms = {" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 ", " 11 "};
+    public static final String[] zooms = {"Random", " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 ", " 11 "};
 
     public static final int BASE_REFRESH_RATE = 3 * 60 * 60 * 1000; // 3 hours
 
@@ -117,7 +117,7 @@ public class SettingsActivity extends FragmentActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (mService != null)
-                    mService.buildImage(settings.getInt(PreferenceKeys.MODE, 0), position + 8);
+                    mService.buildImage(settings.getInt(PreferenceKeys.MODE, 0), position + 7);
                 editor.putInt(PreferenceKeys.ZOOM, position + 8);
                 editor.commit();
             }

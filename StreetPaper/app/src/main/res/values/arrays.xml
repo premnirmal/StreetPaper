@@ -3,6 +3,7 @@
         <item>Map</item>
         <item>Satellite</item>
         <item>Hybrid</item>
+        <item>Random</item>
     </string-array>
 
     <string-array name="refreshrates">

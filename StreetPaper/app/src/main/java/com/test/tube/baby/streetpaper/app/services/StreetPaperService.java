@@ -92,7 +92,7 @@ public class StreetPaperService extends RemoteMuzeiArtSource implements
                 if (!addresses.isEmpty()) {
                     Address address = addresses.get(0);
                     name = address.getSubLocality();
-                    desc = address.getAdminArea() + " " + address.getCountryName();
+                    desc = address.getAdminArea() + ", " + address.getCountryName();
                 }
                 publishArtwork(new Artwork.Builder()
                         .title(name)
