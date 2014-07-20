@@ -11,4 +11,4 @@ Best used with **0 blur** and **0 dim** settings.
 Thanks to [PomepuyN](https://github.com/PomepuyN/muzei-flickr) for open sourcing a Flickr extension.
 
 ### Thanks for checking this out
-[@test_tubebaby](https://twitter.com/test_tubebaby)
+[@premnirmal88](https://twitter.com/premnirmal88)
